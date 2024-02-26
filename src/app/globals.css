@@ -3,25 +3,55 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
+
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: #5372F0;
 }
+
+.custom-overlay {
+  /* background: rgba(62, 61, 61, 0.8); */
+  position: fixed;
+  top: 0;
+  left: -0px;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998;
+}
+
+
+
+.custom-overlay .ReactModal__Content {
+  inset: 0px !important;
+  right: 0 !important;
+  border-radius: 16px 16px 16px 16px !important;
+  height: 50vh;
+  width: 90% !important;
+  background-color: rgb(114, 105, 105) !important;
+  opacity: 0.95 !important;
+  margin: auto !important;
+  border-color: transparent !important;
+  
+} 
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
+}
+
+
