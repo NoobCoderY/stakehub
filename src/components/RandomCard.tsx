@@ -1,7 +1,9 @@
-"use client";
+'use-client'
 import React from 'react';
 import { GrDocumentSound } from "react-icons/gr";
 import { IoReload } from "react-icons/io5";
+
+const isBrowser = () => typeof window !== 'undefined'; //The approach recommended by Next.js
 
 interface propsType {
     heading: string
@@ -14,13 +16,19 @@ interface propsType {
 
 }
 
+
+
 const RandomCard = (props: propsType) => {
 
     const [speaking, setSpeaking] = React.useState(false);
-    let synth:any;
-    if (window !== undefined) {
-         synth = window.speechSynthesis;
-     }
+    const [_window, setWindowObject] = React.useState(null);
+    let synth: any
+    
+    if (isBrowser()) {
+        synth=window.speechSynthesis
+    }
+
+
 
     const speakText = (text:any) => {
         if (synth.speaking) {
@@ -36,6 +44,7 @@ const RandomCard = (props: propsType) => {
         };
     };
 
+  
     React.useEffect(() => {
         return () => {
             synth.cancel();
