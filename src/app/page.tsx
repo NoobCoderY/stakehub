@@ -1,9 +1,42 @@
-import Image from 'next/image'
+import QuotesPage from '@/components/client/QuotesPage'
+import { Quote } from '@/utils/types';
 
-export default function Home() {
+
+interface responseType {
+  quotes: Quote[] | null, 
+  authors: [] |null
+}
+
+const Home = async () => {
+
+  const {quotes,authors}:responseType = await getData();
+ 
   return (
     <>
-      hi
+      <QuotesPage quotes={quotes} authorsData={authors} />
     </>
   )
 }
+
+export default Home;
+
+
+/**************************fetech data from server side********************************** */
+
+export const getData = async () => {
+  let quotes: Quote[] | null = null;
+  let authors: [] | null = null
+  try {
+    const response = await fetch("https://wordsapi-nkj3.onrender.com/quotes");
+    const data = await response.json();
+    quotes = data.quotes
+    authors = data.authors
+  } catch (error) {
+    console.error("Error fetching quotes:", error);
+  }
+
+  return {
+    quotes, authors
+  }
+
+};

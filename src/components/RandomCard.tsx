@@ -1,25 +1,73 @@
+"use client"
 import React from 'react';
+import { GrDocumentSound } from "react-icons/gr";
+import { IoReload } from "react-icons/io5";
 
-const RandomCard = () => {
-  return (
-      <>
-          <div className="  w-full rounded-md flex flex-col items-center justify-center  mx-auto mt-[2rem] px-[1rem]">
-            <div className=" p-[1rem] flex items-center ">
-                <div className="w-[100%] bg-white rounded-lg px-8 py-2 cursor-pointer text-[1rem] font-bold">
-                    Click for Apply Filter
-               </div>
-            </div>
+interface propsType {
+    heading: string
+    text: string |undefined
+    series?: string |undefined
+    author?: string |undefined
+    character?: string |undefined
+    origin?: string |undefined
+    randomGenrator?:() => void
 
-            <div className="border-[1px] border-[#fff] w-[60%] h-[auto]  overflow-scroll bg-white p-[1.5rem] rounded-lg no-scrollbar">
-                <header className="text-center text-4xl p-[0.7rem] font-bold">Quote of the Day</header>
-                <div className="w-[90%] text-[1.2rem]">Never give up because you never know if the next try is going to be the one that works.kkkkkkk kkkkkkkkk kkkkkkkkkkkkkkkk kkkkkkkkkkkk
-                 
+}
+
+const RandomCard = (props: propsType) => {
+
+    const [speaking, setSpeaking] = React.useState(false);
+    const synth = window.speechSynthesis;
+
+    const speakText = (text:any) => {
+        if (synth.speaking) {
+            return;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        synth.speak(utterance);
+        setSpeaking(true);
+
+        utterance.onend = () => {
+            setSpeaking(false);
+        };
+    };
+
+    React.useEffect(() => {
+        return () => {
+            synth.cancel();
+            setSpeaking(false);
+        };
+    }, []);
+
+
+
+    return (
+        <>
+            <div className="border-[1px] border-[#fff] w-[60%] h-[auto]  overflow-scroll bg-white p-[1.5rem] rounded-lg no-scrollbar mt-5 mb-5">
+                <header className="text-center text-4xl p-[0.7rem] font-bold">{props.heading}</header>
+                <div className="w-[90%] text-[1.2rem] mt-5">{props.text}
                 </div>
-                <div className="flex justify-end mt-[10px] text-[1.2rem] font-semibold"><p>__Mary Kay Ash</p></div>
+                <div className="flex justify-end mt-[10px] text-[1.2rem] font-semibold"
+                    style={{ display: props.author == undefined && props.origin == undefined ? "none" : "flex" }}
+                ><p>{props.author != undefined ? `__${props.author}` : `__${props.origin}`}</p></div>
+                  {props.series && (
+                <div className='flex justify-between px-10 text-xl font-semibold mt-4'>
+                    <p>{props.series}</p>
+                    <p>__{props.character}</p>
+                </div>
+                )}
+                <hr className='w-[100%] mt-3 mb-3 border-[1px]   '/>
+                <div className='flex justify-center items-center'>
+                    <div className='flex gap-10'>
+                        <span className='cursor-pointer' onClick={()=>{speakText(props.text)}}><GrDocumentSound size={25} /></span>
+                        <span className='cursor-pointer' onClick={props.randomGenrator}><IoReload size={25}/></span>
+                      </div>
+                   </div>
             </div>
-            </div>
-      </>
-  );
+          
+        </>
+    );
 }
 
 export default RandomCard;
