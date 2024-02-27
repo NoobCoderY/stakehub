@@ -41,11 +41,11 @@ const FilterBar = ({  authors, selectedAuthors, setSelectedAuthors }: propsTypes
     return (
         <div className="w-[70%] bg-white rounded-md p-[1rem]">
 
-            <div className="flex flex-wrap gap-3 ">
+            <div className="flex flex-wrap gap-3 items-center justify-center">
                 {
                     authors?.map((authorsName, index) => {
                         return (
-                            <div className="px-[0.7rem] min-w-[110px] py-[0.4rem] bg-[white] cursor-pointer rounded-lg text-[black] border-[1px] border-[#a19d9d] "
+                            <div className="px-[0.7rem] min-w-[140px] sm:min-w-[150px] md:min-w-[130px] lg:min-w-[110px] py-[0.4rem] bg-[white] cursor-pointer rounded-lg text-[black] border-[1px] border-[#a19d9d] "
                                 key={`${authorsName + index}`}
                                 style={{
                                     borderLeft: checkSelected(authorsName) ? " 6px solid blue" : "",
