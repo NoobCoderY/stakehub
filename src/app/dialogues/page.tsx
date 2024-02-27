@@ -14,12 +14,12 @@ const page = async() => {
   )
 }
 
-export default page
+
 
 
 /**************************fetech data from server side********************************** */
 
-export const getData = async () => {
+ const getData = async () => {
     let AllDialogues: Dialogue[] | null = null;
    
     try {
@@ -34,4 +34,6 @@ export const getData = async () => {
         AllDialogues
     }
   
-  };
+};
+  
+export default page

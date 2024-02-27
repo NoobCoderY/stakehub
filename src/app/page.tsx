@@ -18,12 +18,12 @@ const Home = async () => {
   )
 }
 
-export default Home;
+
 
 
 /**************************fetech data from server side********************************** */
 
-export const getData = async () => {
+ const getData = async () => {
   let quotes: Quote[] | null = null;
   let authors: [] | null = null
   try {
@@ -40,3 +40,5 @@ export const getData = async () => {
   }
 
 };
+
+export default Home;
