@@ -1,42 +1,54 @@
-"use client"
+"use client";
 import React from 'react';
 import { GrDocumentSound } from "react-icons/gr";
 import { IoReload } from "react-icons/io5";
 
 interface propsType {
     heading: string
-    text: string |undefined
-    series?: string |undefined
-    author?: string |undefined
-    character?: string |undefined
-    origin?: string |undefined
-    randomGenrator?:() => void
+    text: string | undefined
+    series?: string | undefined
+    author?: string | undefined
+    character?: string | undefined
+    origin?: string | undefined
+    randomGenrator?: () => void
 
 }
 
 const RandomCard = (props: propsType) => {
 
     const [speaking, setSpeaking] = React.useState(false);
-    const synth = window.speechSynthesis;
+    const [synth, setSynth] = React.useState<SpeechSynthesis | null>(null);
 
-    const speakText = (text:any) => {
-        if (synth.speaking) {
-            return;
+    const speakText = (text: any) => {
+        if (synth != null) {
+            if (synth.speaking) {
+                return;
+            }
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            synth.speak(utterance);
+            setSpeaking(true);
+
+            utterance.onend = () => {
+                setSpeaking(false);
+            };
         }
-
-        const utterance = new SpeechSynthesisUtterance(text);
-        synth.speak(utterance);
-        setSpeaking(true);
-
-        utterance.onend = () => {
-            setSpeaking(false);
-        };
     };
 
     React.useEffect(() => {
+        if (typeof window !== 'undefined') {
+            if (!synth) {
+                setSynth(window.speechSynthesis);
+            }
+        }
+    }, [synth]);
+
+    React.useEffect(() => {
         return () => {
-            synth.cancel();
-            setSpeaking(false);
+            if (synth != null) {
+                synth.cancel();
+                setSpeaking(false);
+            }
         };
     }, []);
 
@@ -51,21 +63,21 @@ const RandomCard = (props: propsType) => {
                 <div className="flex justify-end mt-[10px] text-[1.2rem] font-semibold"
                     style={{ display: props.author == undefined && props.origin == undefined ? "none" : "flex" }}
                 ><p>{props.author != undefined ? `__${props.author}` : `__${props.origin}`}</p></div>
-                  {props.series && (
-                <div className='flex justify-between px-10 text-xl font-semibold mt-4'>
-                    <p>{props.series}</p>
-                    <p>__{props.character}</p>
-                </div>
+                {props.series && (
+                    <div className='flex justify-between px-10 text-xl font-semibold mt-4'>
+                        <p>{props.series}</p>
+                        <p>__{props.character}</p>
+                    </div>
                 )}
-                <hr className='w-[100%] mt-3 mb-3 border-[1px]   '/>
+                <hr className='w-[100%] mt-3 mb-3 border-[1px]   ' />
                 <div className='flex justify-center items-center'>
                     <div className='flex gap-10'>
-                        <span className='cursor-pointer' onClick={()=>{speakText(props.text)}}><GrDocumentSound size={25} /></span>
-                        <span className='cursor-pointer' onClick={props.randomGenrator}><IoReload size={25}/></span>
-                      </div>
-                   </div>
+                        <span className='cursor-pointer' onClick={() => { speakText(props.text) }}><GrDocumentSound size={25} /></span>
+                        <span className='cursor-pointer' onClick={props.randomGenrator}><IoReload size={25} /></span>
+                    </div>
+                </div>
             </div>
-          
+
         </>
     );
 }
