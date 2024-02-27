@@ -77,7 +77,7 @@ const QuotesPage = ({ quotes, authorsData }: propsType) => {
                 {filterShow && (<FilterBar authors={authors} selectedAuthors={selectedAuthors} setSelectedAuthors={setSelectedAuthors} handleSearch={handleSearch} />)}
                 {showAllQoutes ? <div className='flex flex-wrap'>
                     {handleSearch()?.map((qoutesData, index) => {
-                        return (<QouteCard text={qoutesData.text} id={qoutesData.id} author={qoutesData.author} />)
+                        return (<QouteCard text={qoutesData.text} id={qoutesData.id} author={qoutesData.author}  key={index}/>)
                     })}
                 </div> : <RandomCard text={randomQuote?.text} author={randomQuote?.author} heading='Qoute Of The Day' randomGenrator={randomQuotesGenerator} />}
             </div>
